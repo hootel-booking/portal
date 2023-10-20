@@ -3,7 +3,7 @@ $(document).ready(function () {
   let rooms = [];
 
   $.ajax({
-    url: `http://localhost:8080/rooms/${pageNumber}`,
+    url: `http://localhost:8080/rooms/page=${pageNumber}`,
     method: "get",
   }).done(function (data) {
     rooms = data?.data?.content;
@@ -33,7 +33,7 @@ $(document).ready(function () {
                   </tr>
                 </tbody>
               </table>
-              <a href="./room-details.html/${room.id}" class="primary-btn">More Details</a>
+              <a href="./room-details.html" class="primary-btn" id-room="${room.id}">More Details</a>
             </div>
           </div>
         </div>
