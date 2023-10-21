@@ -1,7 +1,11 @@
 $(document).ready(function () {
-  const id = 1;
+  // get id room
+  const queryString = window.location.search;
+  const urlParams = new URLSearchParams(queryString);
+  const idRoom = urlParams.get("id");
+
   $.ajax({
-    url: `http://localhost:8080/rooms/id=${id}`,
+    url: `http://localhost:8080/rooms/id=${idRoom}`,
     method: "get",
   }).done(function (data) {
     const room = data?.data;

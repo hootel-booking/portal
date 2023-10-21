@@ -1,5 +1,6 @@
 $(document).ready(function () {
-  renderListRoom(0);
+  const initPageNumber = 0;
+  renderListRoom(initPageNumber);
   const idElRow = document.getElementById("rowRoom");
 
   function renderListRoom(pageNumber) {
@@ -40,14 +41,17 @@ $(document).ready(function () {
                   </tr>
                 </tbody>
               </table>
-              <a href="#" class="primary-btn" id-room="${room.id}">More Details</a>
+              <a href="./room-details.html?id=${room.id}" class="primary-btn">More Details</a>
             </div>
           </div>
         `;
 
         idElRoom.innerHTML = htmlDisplay;
       });
-      displayPagination(totalPage);
+
+      if (rooms.length > 0) {
+        displayPagination(totalPage);
+      }
     });
   }
 
