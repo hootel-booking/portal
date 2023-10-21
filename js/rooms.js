@@ -1,21 +1,28 @@
 $(document).ready(function () {
-  let pageNumber = 0;
-  let rooms = [];
+  renderListRoom(0);
+  const idElRow = document.getElementById("rowRoom");
 
-  $.ajax({
-    url: `http://localhost:8080/rooms/page=${pageNumber}`,
-    method: "get",
-  }).done(function (data) {
-    rooms = data?.data?.content;
-    const totalPage = data?.data?.totalPages;
+  function renderListRoom(pageNumber) {
+    $.ajax({
+      url: `http://localhost:8080/rooms/page=${pageNumber}`,
+      method: "get",
+    }).done(function (data) {
+      let rooms = [];
+      totalPage = data?.data?.totalPages;
+      rooms = data?.data?.content;
 
-    let idRow = document.getElementById("rowRoom");
-    let htmlDisplay = "";
-    //const lengthData = rooms.length;
+      rooms.forEach((room) => {
+        let htmlDisplay = "";
 
-    rooms.forEach((room) => {
-      htmlDisplay += `
-        <div class="col-lg-4 col-md-6">
+        // create div element
+        let div = document.createElement("div");
+        div.classList.add("col-lg-4", "col-md-6");
+        div.setAttribute("id", `idRoom-${room.id}`);
+
+        idElRow.appendChild(div);
+        const idElRoom = document.getElementById(`idRoom-${room.id}`);
+
+        htmlDisplay = `
           <div class="room-item">
             <img src="img/room/room-3.jpg" alt="" />
             <div class="ri-text">
@@ -33,25 +40,45 @@ $(document).ready(function () {
                   </tr>
                 </tbody>
               </table>
-              <a href="./room-details.html" class="primary-btn" id-room="${room.id}">More Details</a>
+              <a href="#" class="primary-btn" id-room="${room.id}">More Details</a>
             </div>
           </div>
-        </div>
-      `;
-    });
+        `;
 
-    // pagination
-    htmlDisplay += `
-      <div class="col-lg-12">
-        <div class="room-pagination">
-          <a href="#">Prev <i class="fa fa-long-arrow-left"></i></a>
-          <a href="#">1</a>
-          <a href="#">2</a>
-          <a href="#">Next <i class="fa fa-long-arrow-right"></i></a>
-        </div>
-      </div>
+        idElRoom.innerHTML = htmlDisplay;
+      });
+      displayPagination(totalPage);
+    });
+  }
+
+  function displayPagination(totalPage) {
+    let htmlPage = "";
+    for (let page = 0; page < totalPage; page++) {
+      htmlPage += `<a href="#" class="btn-page" id-page="${page}">${
+        page + 1
+      }</a>`;
+    }
+
+    let htmlDisplay = `
+    <div class="room-pagination">
+      ${htmlPage}
+    </div>
     `;
 
-    idRow.innerHTML = htmlDisplay;
+    // create div element
+    let div = document.createElement("div");
+    div.classList.add("col-lg-12");
+    div.setAttribute("id", "pagination");
+
+    idElRow.appendChild(div);
+
+    const idElPagination = document.getElementById("pagination");
+    idElPagination.innerHTML = htmlDisplay;
+  }
+
+  $(document).on("click", ".btn-page", function () {
+    $(idElRow).empty();
+    let pageNumber = $(this).attr("id-page");
+    renderListRoom(pageNumber);
   });
 });
