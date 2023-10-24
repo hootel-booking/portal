@@ -70,7 +70,6 @@
           <li>
             <a href="./pages.html">Pages</a>
             <ul class="dropdown">
-              <li><a href="./room-details.html">Room Details</a></li>
               <li><a href="./blog-details.html">Blog Details</a></li>
               <li><a href="#">Family Room</a></li>
               <li><a href="#">Premium Room</a></li>
@@ -149,7 +148,6 @@
                     <li>
                       <a href="./pages.html">Pages</a>
                       <ul class="dropdown">
-                        <li><a href="./room-details.html">Room Details</a></li>
                         <li><a href="./blog-details.html">Blog Details</a></li>
                         <li><a href="#">Family Room</a></li>
                         <li><a href="#">Premium Room</a></li>
@@ -161,8 +159,13 @@
                 </nav>
                 <div class="nav-right search-switch">
                   <div class="cart">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="badge badge-warning" id="lblCartCount">5</span>
+                    <a href="./cart.html">
+                      <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                      <span
+                        class="badge badge-warning"
+                        id="lblCartCount"
+                      ></span>
+                    </a>
                   </div>
                   <div class="search search-rooms">
                     <i class="icon_search"></i>
@@ -196,9 +199,37 @@
 
     <!-- Rooms Section Begin -->
     <section class="rooms-section spad">
-      <div class="container">
-        <div class="row" id="rowRoom"></div>
-      </div>
+      <form class="bg0 p-t-75 p-b-85">
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 m-lr-auto m-b-50">
+              <div class="m-l-25 m-r--38 m-lr-0-xl">
+                <div class="wrap-table-shopping-cart">
+                  <table class="table-shopping-cart" id="idTable">
+                    <tr class="table_head">
+                      <th class="column-1"></th>
+                      <th class="column-2">Room</th>
+                      <th class="column-3">Price</th>
+                      <th class="column-3">Discount</th>
+                      <th class="column-3">Total</th>
+                      <th class="column-5">Action</th>
+                    </tr>
+                  </table>
+                </div>
+                <div
+                  class="flex-w flex-sb-m bor15 p-t-18 p-b-15 p-lr-40 p-lr-15-sm"
+                >
+                  <div
+                    class="flex-c-m stext-101 cl2 size-119 bg8 bor13 hov-btn3 p-lr-15 trans-04 pointer m-tb-10 delete-all"
+                  >
+                    Delete All
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
     </section>
     <!-- Rooms Section End -->
 
@@ -304,6 +335,6 @@
     <script src="js/main.js"></script>
 
     <script src="js/badge-cart.js"></script>
-    <script src="js/rooms.js"></script>
+    <script src="js/cart.js"></script>
   </body>
 </html>
