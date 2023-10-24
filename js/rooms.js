@@ -81,7 +81,9 @@ $(document).ready(function () {
   }
 
   $(document).on("click", ".btn-page", function () {
+    // reset total rooms
     $(idElRow).empty();
+
     let pageNumber = $(this).attr("id-page");
     renderListRoom(pageNumber);
   });
