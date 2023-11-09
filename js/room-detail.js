@@ -30,7 +30,7 @@ $(document).ready(function () {
                       <a href="#" class="add-to-cart-btn">Add To Cart</a>
                   </div>
               </div>
-              <h2>159$<span>/Pernight</span></h2>
+              <h2>${room.price}$<span>/Pernight</span></h2>
               <table>
                   <tbody>
                       <tr>
@@ -43,7 +43,7 @@ $(document).ready(function () {
                       </tr>
                   </tbody>
               </table>
-              <p class="f-para">${room.description}</p>
+              <p class="f-para">${room.description ? room.description : ""}</p>
           </div>
       `;
 
@@ -77,4 +77,39 @@ $(document).ready(function () {
       }
     });
   });
+
+  $(document).on("click", ".btn-check-availability", function (e) {
+    // prevent reload page
+    e.preventDefault();
+
+    const getElModal = document.getElementById("modalReservation");
+
+    let dateCheckIn = $("#date-in").val();
+    let dateCheckOut = $("#date-out").val();
+
+    $.ajax({
+      url: `http://localhost:8080/reservation/idRoom=${idRoom}`,
+      method: "post",
+      contentType: "application/json",
+      data: JSON.stringify({
+        dateCheckIn: formatDate(dateCheckIn),
+        dateCheckOut: formatDate(dateCheckOut),
+      }),
+    }).done(function (data) {
+      if (data?.data) {
+        getElModal.style.display = "block";
+      } else {
+        alert("This room is not available");
+        getElModal.style.display = "none";
+      }
+    });
+  });
+
+  function formatDate(date) {
+    const dateUTC = new Date(date);
+    const getDate = dateUTC.getDate();
+    const month = dateUTC.getMonth() + 1;
+    const year = dateUTC.getFullYear();
+    return getDate + "-" + month + "-" + year;
+  }
 });

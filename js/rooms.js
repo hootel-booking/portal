@@ -50,17 +50,18 @@ $(document).ready(function () {
       });
 
       if (rooms.length > 0) {
-        displayPagination(totalPage);
+        displayPagination(totalPage, pageNumber);
       }
     });
   }
 
-  function displayPagination(totalPage) {
+  function displayPagination(totalPage, currentPage) {
+    currentPage = parseInt(currentPage);
     let htmlPage = "";
     for (let page = 0; page < totalPage; page++) {
-      htmlPage += `<a href="#" class="btn-page" id-page="${page}">${
-        page + 1
-      }</a>`;
+      htmlPage += `<a href="#" class="btn-page" id-page="${page}" style="${
+        currentPage === page ? "background-color: #efd4b9; color: white" : ""
+      }">${page + 1}</a>`;
     }
 
     let htmlDisplay = `
