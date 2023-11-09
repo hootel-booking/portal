@@ -155,6 +155,15 @@
                     </li>
                     <li><a href="./blog.html">News</a></li>
                     <li><a href="./contact.html">Contact</a></li>
+                    <li>
+                      <a href="./your-reservation.html">Reservation</a>
+                      <ul class="dropdown">
+                        <li>
+                          <a href="./your-reservation.html">Your Booking</a>
+                        </li>
+                        <li><a href="./booking-now.html">Booking Now</a></li>
+                      </ul>
+                    </li>
                   </ul>
                 </nav>
                 <div class="nav-right search-switch">
@@ -199,7 +208,7 @@
 
     <!-- Room Details Section Begin -->
     <section class="room-details-section spad">
-      <div class="container">
+      <div class="container" id="containerRoom">
         <div class="row">
           <div class="col-lg-8">
             <div class="room-details-item" id="detailRoom"></div>
@@ -302,7 +311,9 @@
                     <option value="">1 Room</option>
                   </select>
                 </div>
-                <button type="submit">Check Availability</button>
+                <button type="button" class="btn-check-availability">
+                  Check Availability
+                </button>
               </form>
             </div>
           </div>

@@ -28,7 +28,7 @@ $(document).ready(function () {
             </div>
         </td>
         <td class="column-2">${room.nameRoom}</td>
-        <td class="column-3">$ ${room.price}/Pernight</td>
+        <td class="column-3">$${room.price}/Pernight</td>
         <td class="column-3">${room.discount}%</td>
         <td class="column-3">${total}</td>
         <th class="column-5">
@@ -43,6 +43,43 @@ $(document).ready(function () {
 
       idElRoom.innerHTML = htmlDisplay;
     });
+
+    if (rooms.length > 0) {
+      const idElParentTable = document.getElementById("idParentTable");
+
+      let divParentBtnDeleteAll = document.createElement("div");
+      divParentBtnDeleteAll.setAttribute("id", "idParentBtnDelete");
+      divParentBtnDeleteAll.classList.add(
+        "flex-w",
+        "flex-sb-m",
+        "bor15",
+        "p-t-18",
+        "p-b-15",
+        "p-lr-40",
+        "p-lr-15-sm"
+      );
+
+      let divChildBtnDeleteAll = document.createElement("div");
+      divChildBtnDeleteAll.classList.add(
+        "flex-c-m",
+        "stext-101",
+        "cl2",
+        "size-119",
+        "bg8",
+        "bor13",
+        "hov-btn3",
+        "p-lr-15",
+        "trans-04",
+        "pointer",
+        "m-tb-10",
+        "delete-all"
+      );
+      divChildBtnDeleteAll.innerHTML = "Delete All";
+
+      divParentBtnDeleteAll.appendChild(divChildBtnDeleteAll);
+
+      idElParentTable.appendChild(divParentBtnDeleteAll);
+    }
   });
 
   $(document).on("click", ".btn-booking", function () {
@@ -68,6 +105,10 @@ $(document).ready(function () {
 
         const childRemoved = document.getElementById(`idRoom-${idRoom}`);
         idElTable.removeChild(childRemoved);
+
+        // hide btn Delete All
+        hideDeleteAllBtn();
+        handleCartCount();
       } else {
         alert("Error");
       }
@@ -80,7 +121,39 @@ $(document).ready(function () {
       url: `http://localhost:8080/carts/idUser=${idUser}`,
       method: "delete",
     }).done(function (data) {
-      console.log(data);
+      if (data?.data === 0) {
+        // remove all child
+        while (idElTable.childNodes.length > 1) {
+          idElTable.removeChild(idElTable.lastChild);
+        }
+
+        // hide btn Delete All
+        const idElParentTable = document.getElementById("idParentTable");
+        const childRemoved = document.getElementById("idParentBtnDelete");
+        idElParentTable.removeChild(childRemoved);
+
+        // set = 0 cart count
+        const getElIdCartCount = document.getElementById("lblCartCount");
+        getElIdCartCount.innerHTML = "";
+      }
     });
   });
+
+  function hideDeleteAllBtn() {
+    let numb = document.getElementById("idTable").childElementCount;
+    if (numb <= 1) {
+      const idElParentTable = document.getElementById("idParentTable");
+      const childRemoved = document.getElementById("idParentBtnDelete");
+      idElParentTable.removeChild(childRemoved);
+    }
+  }
+
+  function handleCartCount() {
+    const getElIdCartCount = document.getElementById("lblCartCount");
+    let contentCartCount = $("#lblCartCount").text();
+    if (contentCartCount !== "") {
+      htmlDisplay = Number(contentCartCount) - 1 + "";
+      getElIdCartCount.innerHTML = htmlDisplay;
+    }
+  }
 });
