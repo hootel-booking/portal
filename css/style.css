@@ -2335,3 +2335,17 @@ ul, ol {
 		margin-bottom: 10px;
 	}
 }
+
+.btn-manage a {
+    color: #ffffff; 
+    padding: 10px 20px; 
+    border-radius: 5px; 
+    text-decoration: none; 
+    font-size: 16px; 
+    transition: background-color 0.3s;
+}
+
+.btn-manage a:hover {
+    background-color: #45a049; /* Màu nền xanh lá cây đậm hơn khi hover */
+}
+
