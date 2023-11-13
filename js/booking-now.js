@@ -2,6 +2,7 @@ $(document).ready(function () {
   const elIdCardBooking = document.getElementById("cardBooking");
   let price = 0;
   let discount = 0;
+  let total = 0;
   showFormCheckAvailability();
 
   function showFormCheckAvailability() {
@@ -54,8 +55,13 @@ $(document).ready(function () {
         </div>
 
         <div class="row m-4" style="justify-content: end;">
-          <button type="submit" class="btn btn-outline-secondary btn-check-availability">Check Availability</button>
-        </div>
+          <div class="ml-2">
+            <button type="submit" class="btn btn-outline-secondary btn-check-availability">Check Availability</button>
+          </div>
+          <div class="ml-2">
+            <button type="submit" class="btn btn-outline-secondary btn-reset" disabled>Reset</button>
+          </div>
+          </div>
       </form>
     `;
 
@@ -103,6 +109,19 @@ $(document).ready(function () {
       if (data?.data) {
         showUserInfo();
         showInfoPrice();
+
+        // disable btn check availability
+        let elCheck = document.getElementsByClassName("btn-check-availability");
+        elCheck[0].disabled = true;
+
+        // enable btn reset
+        let elReset = document.getElementsByClassName("btn-reset");
+        elReset[0].disabled = false;
+
+        // disable form booking
+        document.getElementById("idDropdownRooms").disabled = true;
+        document.getElementById("date-in").disabled = true;
+        document.getElementById("date-out").disabled = true;
       } else {
         alert("This room is not available");
       }
@@ -162,7 +181,7 @@ $(document).ready(function () {
         new Date(dateCheckIn),
         new Date(dateCheckOut)
       );
-      const total = canculateTotal(betwenTwoDays, room.price, room.discount);
+      total = canculateTotal(betwenTwoDays, room.price, room.discount);
 
       createHrEl();
 
@@ -200,7 +219,8 @@ $(document).ready(function () {
         <div class="ml-2">
           <input
             type="button"
-            class="btn btn-outline-secondary btn-back"
+            class="btn btn-outline-secondary btn-pay"
+            data-toggle="modal" data-target="#payModal"
             value="Pay In Advance"
           />
         </div>
@@ -281,7 +301,7 @@ $(document).ready(function () {
         const result = data?.data;
         if (result) {
           alert("Success");
-          //window.location.replace("http://127.0.0.1:5500/cart.html");
+          window.location.replace("http://127.0.0.1:5500/deposit.html");
         } else {
           alert("Error");
         }
@@ -291,5 +311,135 @@ $(document).ready(function () {
       });
   });
 
-  function reset() {}
+  $(document).on("click", ".btn-reset", function (e) {
+    e.preventDefault();
+
+    // remove btn
+    removeChildEl();
+
+    // remove price
+    removeChildEl();
+
+    // remove hr tag
+    removeChildEl();
+
+    // remove user info
+    removeChildEl();
+
+    // remove hr tag
+    removeChildEl();
+
+    // reset form value
+    document.getElementById("date-in").value = "";
+    document.getElementById("date-out").value = "";
+    const getIdElSelect = document.getElementById("idDropdownRooms");
+    getIdElSelect.selectedIndex = 0;
+
+    // enable btn check availability
+    let elCheck = document.getElementsByClassName("btn-check-availability");
+    elCheck[0].disabled = false;
+
+    // disable btn reset
+    let elReset = document.getElementsByClassName("btn-reset");
+    elReset[0].disabled = true;
+
+    // enable form booking
+    document.getElementById("idDropdownRooms").disabled = false;
+    document.getElementById("adult").disabled = false;
+    document.getElementById("child").disabled = false;
+    document.getElementById("note").disabled = false;
+    document.getElementById("date-in").disabled = false;
+    document.getElementById("date-out").disabled = false;
+
+    // reset modal
+    document.getElementById("total").value = "";
+    document.getElementById("accountNumber").value = "";
+    document.getElementById("deposit").value = "";
+    let ele = document.getElementsByName("methodRadio");
+    ele[0].checked = true;
+    ele[1].checked = false;
+    document.getElementById("deposit-field").style.display = "none";
+  });
+
+  function removeChildEl() {
+    let childEl = elIdCardBooking.lastElementChild;
+    elIdCardBooking.removeChild(childEl);
+  }
+
+  $(document).on("click", ".btn-pay", function (e) {
+    e.preventDefault();
+    document.getElementById("total").value = total;
+
+    let radiosEl = document.payForm.methodRadio;
+    let prev = null;
+    for (let i = 0; i < radiosEl.length; i++) {
+      radiosEl[i].addEventListener("change", function () {
+        prev ? prev.value : null;
+        if (this !== prev) {
+          prev = this;
+        }
+
+        if (parseInt(this.value) === 1) {
+          document.getElementById("deposit").value = total / 2;
+          document.getElementById("deposit-field").style.display = "flex";
+        } else {
+          document.getElementById("deposit-field").style.display = "none";
+        }
+      });
+    }
+  });
+
+  $(document).on("click", ".btn-submit", function (e) {
+    // prevent reload page
+    e.preventDefault();
+
+    const ID_STATUS_PAID = 2;
+    const ID_STATUS_DEPOSIT = 5;
+
+    // get value form
+    const getIdElSelect = document.getElementById("idDropdownRooms");
+    let idRoom = parseInt(getIdElSelect.value);
+    let dateCheckIn = $("#date-in").val();
+    let dateCheckOut = $("#date-out").val();
+    const idUser = 1;
+    let adult = $("#adult").val() ? $("#adult").val() : 0;
+    let child = $("#child").val() ? $("#child").val() : 0;
+    let note = $("#note").val();
+    let accountNumber = $("#accountNumber").val();
+    let method = document.querySelector(
+      'input[name="methodRadio"]:checked'
+    ).value;
+
+    $.ajax({
+      url: `http://localhost:8080/reservation`,
+      method: "post",
+      contentType: "application/json",
+      data: JSON.stringify({
+        idRoom: idRoom,
+        dateCheckIn: formatDate(dateCheckIn),
+        dateCheckOut: formatDate(dateCheckOut),
+        adultNumber: adult,
+        childNumber: child,
+        price: price,
+        discount: discount,
+        note: note,
+        idUser: idUser,
+        idStatus: parseInt(method) === 0 ? ID_STATUS_PAID : ID_STATUS_DEPOSIT,
+        deposit: parseInt(method) === 0 ? total : total / 2,
+        accountNumber: accountNumber,
+      }),
+    })
+      .done(function (data) {
+        const result = data?.data;
+        if (result) {
+          alert("Success");
+          window.location.replace("http://127.0.0.1:5500/deposit.html");
+        } else {
+          alert("Error");
+        }
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        alert("Error " + errorThrown);
+      });
+  });
 });
