@@ -112,7 +112,7 @@
                   <a href="#"><i class="fa fa-tripadvisor"></i></a>
                   <a href="#"><i class="fa fa-instagram"></i></a>
                 </div>
-                <a href="#" class="bk-btn">Booking Now</a>
+                <a href="./booking-now.html" class="bk-btn">Booking Now</a>
                 <div class="language-option">
                   <img src="img/flag.jpg" alt="" />
                   <span>EN <i class="fa fa-angle-down"></i></span>
@@ -298,17 +298,18 @@
                   <input type="text" class="date-input" id="date-out" />
                   <i class="icon_calendar"></i>
                 </div>
-                <div class="select-option">
+                <div class="check-date">
                   <label for="guest">Guests:</label>
-                  <select id="guest">
-                    <option value="">3 Adults</option>
-                  </select>
+                  <input type="number" class="guests" id="guests" />
                 </div>
-                <div class="select-option">
+                <div class="check-date">
                   <label for="room">Room:</label>
-                  <select id="room">
-                    <option value="">1 Room</option>
-                  </select>
+                  <input
+                    type="text"
+                    class="room-name"
+                    id="room-name"
+                    disabled
+                  />
                 </div>
                 <button type="button" class="btn-check-availability">
                   Check Availability

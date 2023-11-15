@@ -3,7 +3,9 @@ $(document).ready(function () {
   const queryString = window.location.search;
   const urlParams = new URLSearchParams(queryString);
   const idRoom = Number(urlParams.get("id"));
-  const idUser = 1;
+  const currentUser = JSON.parse(localStorage.getItem("CURRENT_USER"));
+  const idUser = currentUser?.id;
+  const token = localStorage.getItem("TOKEN");
 
   $.ajax({
     url: `http://localhost:8080/rooms/id=${idRoom}`,
@@ -12,6 +14,7 @@ $(document).ready(function () {
     const room = data?.data;
     const getTagIdRoom = document.getElementById("detailRoom");
     let htmlDisplay = "";
+    document.getElementById("room-name").value = `${room.name}`;
 
     htmlDisplay = `
           <img src="img/room/room-details.jpg" alt="">
@@ -59,6 +62,9 @@ $(document).ready(function () {
         idRoom: idRoom,
         idUser: idUser,
       }),
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }).done(function (data) {
       if (data.data) {
         const getElIdCartCount = document.getElementById("lblCartCount");
