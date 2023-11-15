@@ -1,10 +1,14 @@
 $(document).ready(function () {
   const idUser = 1;
   const idElTable = document.getElementById("idTable");
+  const token = localStorage.getItem("TOKEN");
 
   $.ajax({
     url: `http://localhost:8080/carts/idUser=${idUser}`,
     method: "get",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   }).done(function (data) {
     const rooms = data?.data;
 
@@ -99,6 +103,9 @@ $(document).ready(function () {
     $.ajax({
       url: `http://localhost:8080/carts/id=${idRoom}`,
       method: "delete",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }).done(function (data) {
       if (data?.data === true) {
         alert("Success");
@@ -120,6 +127,9 @@ $(document).ready(function () {
     $.ajax({
       url: `http://localhost:8080/carts/idUser=${idUser}`,
       method: "delete",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }).done(function (data) {
       if (data?.data === 0) {
         // remove all child
