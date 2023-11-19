@@ -34,11 +34,17 @@ $(document).ready(function () {
       <div class="flag-dropdown">
         <ul>
           <li><a href="./profile.html">Profile</a></li>
-          <li><a href="#">Logout</a></li>
+          <li><a href="javascript:void(0)" class="logout">Logout</a></li>
         </ul>
       </div>
     `;
 
     idUserNavEl.innerHTML = htmlDisplay;
   }
+
+  $(document).on("click", ".logout", function (e) {
+    localStorage.removeItem("TOKEN");
+    localStorage.removeItem("CURRENT_USER");
+    window.location.replace("http://127.0.0.1:5500/login.html");
+  });
 });
