@@ -103,10 +103,9 @@ $(document).ready(function () {
       }),
     }).done(function (data) {
       if (data?.data) {
-        getElModal.style.display = "block";
+        alert("This room is available");
       } else {
         alert("This room is not available");
-        getElModal.style.display = "none";
       }
     });
   });

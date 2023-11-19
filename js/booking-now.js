@@ -130,11 +130,15 @@ $(document).ready(function () {
 
   function showUserInfo() {
     // get id user
-    const idUser = 1;
+    const currentUser = localStorage.getItem("CURRENT_USER");
+    const idUser = currentUser?.id;
 
     $.ajax({
       url: `http://localhost:8080/users/id=${idUser}`,
       method: "get",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
     }).done(function (data) {
       const user = data?.data;
 

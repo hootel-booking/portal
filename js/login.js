@@ -1,9 +1,11 @@
 $(document).ready(function () {
   class User {
-    constructor(id, email, role) {
+    constructor(id, email, role, avatar, userName) {
       this.id = id;
       this.email = email;
       this.role = role;
+      this.avatar = avatar;
+      this.userName = userName;
     }
   }
 
@@ -27,7 +29,9 @@ $(document).ready(function () {
         const user = new User(
           response.user.id,
           response.user.email,
-          response.user.roleName
+          response.user.roleName,
+          response.user.avatar,
+          response.user.userName
         );
         localStorage.setItem("TOKEN", response.token);
         localStorage.setItem("CURRENT_USER", JSON.stringify(user));

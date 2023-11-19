@@ -60,6 +60,10 @@
   font-size: 150%;
 }
 
+a:hover {
+  color: #007bff;
+}
+
 @media (max-width: 575.98px) {
   .authentication-wrapper .auth-input-wrapper .auth-input {
     font-size: 1.125rem;

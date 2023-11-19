@@ -142,7 +142,7 @@
                     </li>
                     <li><a href="./blog.html">News</a></li>
                     <li><a href="./contact.html">Contact</a></li>
-                    <li>
+                    <li class="active">
                       <a href="./your-reservation.html">Reservation</a>
                       <ul class="dropdown">
                         <li>
@@ -181,10 +181,10 @@
         <div class="row">
           <div class="col-lg-12">
             <div class="breadcrumb-text">
-              <h2>Profile</h2>
+              <h2>Reservation</h2>
               <div class="bt-option">
                 <a href="./home.html">Home</a>
-                <span>Profile</span>
+                <span>Reservation</span>
               </div>
             </div>
           </div>
@@ -193,58 +193,120 @@
     </div>
     <!-- Breadcrumb Section End -->
 
-    <!-- Profile Section Begin -->
-    <section class="profile-section spad">
-        <div class="container">
-            <div class="container-xxl flex-grow-1 container-p-y">
-                <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Settings</h4>
-  
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="card mb-4" >
-                      <form id="formAccountSettings" enctype="multipart/form-data">
-                        <h5 class="card-header">Profile Details</h5>
-                        <div class="card-body">
-                            <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                <img
-                                    src="/img/1.png"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                                    id="uploadedAvatar"
-                                />
-                                <div class="button-wrapper">
-                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                    <span class="d-none d-sm-block">Upload new photo</span>
-                                    <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input
-                                        type="file"
-                                        id="upload"
-                                        class="account-file-input"
-                                        hidden
-                                        accept="image/png, image/jpeg"
-                                        name="file"
-                                    />
-                                    </label>
-                                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-                                      <i class="bx bx-reset d-block d-sm-none"></i>
-                                      <span class="d-none d-sm-block">Reset</span>
-                                    </button>
-                                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-0" />
-                        <div class="card-body" id="formUser"></div>
-                      </form>
-                    </div>
+    <!-- Rooms Section Begin -->
+    <section class="rooms-section spad">
+      <div class="container">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="col-lg" id="reservationInfo"></div>
+        </div>
+      </div>
+
+      <!-- Modal -->
+      <div
+        class="modal fade"
+        id="payModal"
+        tabindex="-1"
+        role="dialog"
+        aria-labelledby="myModalLabel"
+      >
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title" id="myModalLabel">Pay In Advance</h4>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <form name="payForm">
+                <div class="row m-2">
+                  <dt class="col-sm-4 col-form-label" for="total">Total ($)</dt>
+                  <div class="col-sm-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="total"
+                      disabled
+                    />
                   </div>
                 </div>
+
+                <div class="row m-2">
+                  <dt class="col-sm-4 col-form-label" for="accountNumber">
+                    Account number
+                  </dt>
+                  <div class="col-sm-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="accountNumber"
+                    />
+                  </div>
+                </div>
+
+                <div class="row m-2">
+                  <dt class="col-sm-4 col-form-label" for="room">Method</dt>
+                  <div class="col-sm-8">
+                    <div class="radio">
+                      <label
+                        ><input
+                          type="radio"
+                          name="methodRadio"
+                          value="0"
+                          checked
+                        />Pay All</label
+                      >
+                    </div>
+                    <div class="radio">
+                      <label
+                        ><input
+                          type="radio"
+                          name="methodRadio"
+                          value="1"
+                        />Deposit</label
+                      >
+                    </div>
+                    <small>You must pay 50% total if select deposit</small>
+                  </div>
+                </div>
+
+                <div class="row m-2" id="deposit-field" style="display: none">
+                  <dt class="col-sm-4 col-form-label" for="deposit">
+                    Deposit ($)
+                  </dt>
+                  <div class="col-sm-8">
+                    <input
+                      type="text"
+                      class="form-control"
+                      id="deposit"
+                      disabled
+                    />
+                  </div>
+                </div>
+              </form>
             </div>
+            <div class="modal-footer">
+              <button
+                type="button"
+                class="btn btn-default"
+                data-dismiss="modal"
+              >
+                Close
+              </button>
+              <button type="button" class="btn btn-primary btn-submit">
+                Submit
+              </button>
+            </div>
+          </div>
         </div>
+      </div>
     </section>
-    <!-- Profile Section End -->
+    <!-- Rooms Section End -->
 
     <!-- Footer Section Begin -->
     <footer class="footer-section">
@@ -347,10 +409,8 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
-    <script src="js/pages-account-settings-account.js"></script>
-
     <script src="js/badge-cart.js"></script>
 
-    <script src="js/update-profile.js"></script>
+    <script src="js/reservation-detail.js"></script>
   </body>
 </html>
