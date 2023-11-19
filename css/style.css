@@ -392,7 +392,6 @@ ol {
 }
 .top-nav .tn-right .language-option .flag-dropdown ul li a {
   font-size: 14px;
-  text-transform: uppercase;
   font-weight: 500;
   color: #19191a;
   -webkit-transition: all 0.3s;

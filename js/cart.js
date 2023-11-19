@@ -1,5 +1,6 @@
 $(document).ready(function () {
-  const idUser = 1;
+  const currentUser = JSON.parse(localStorage.getItem("CURRENT_USER"));
+  const idUser = currentUser?.id;
   const idElTable = document.getElementById("idTable");
   const token = localStorage.getItem("TOKEN");
 

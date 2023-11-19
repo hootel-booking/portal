@@ -1,18 +1,44 @@
 $(document).ready(function () {
-  const idUser = 1;
+  const currentUser = JSON.parse(localStorage.getItem("CURRENT_USER"));
+  const idUser = currentUser?.id;
   const getElIdCartCount = document.getElementById("lblCartCount");
-  let htmlDisplay = "";
   const token = localStorage.getItem("TOKEN");
 
-  $.ajax({
-    url: `http://localhost:8080/carts/badge-cart/id=${idUser}`,
-    method: "get",
-    headers: {
-      Authorization: "Bearer " + token,
-    },
-  }).done(function (data) {
-    htmlDisplay = data?.data !== 0 ? data.data : "";
+  getInfoUser();
+  getInfoBadgeCart();
 
-    getElIdCartCount.innerHTML = htmlDisplay;
-  });
+  function getInfoBadgeCart() {
+    $.ajax({
+      url: `http://localhost:8080/carts/badge-cart/id=${idUser}`,
+      method: "get",
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    }).done(function (data) {
+      let htmlDisplay = "";
+      htmlDisplay = data?.data !== 0 ? data.data : "";
+
+      getElIdCartCount.innerHTML = htmlDisplay;
+    });
+  }
+
+  function getInfoUser() {
+    const idUserNavEl = document.getElementById("user-nav");
+    const dataImage = currentUser?.avatar
+      ? `http://localhost:8080/file/pathImage=avatars&fileName=${currentUser.avatar}`
+      : "../img/12.jpg";
+    let htmlDisplay = "";
+    htmlDisplay = `
+      <img src=${dataImage} alt="avatar" />
+      <span>${currentUser?.userName} <i class="fa fa-angle-down"></i></span>
+      <div class="flag-dropdown">
+        <ul>
+          <li><a href="./profile.html">Profile</a></li>
+          <li><a href="#">Logout</a></li>
+        </ul>
+      </div>
+    `;
+
+    idUserNavEl.innerHTML = htmlDisplay;
+  }
 });
