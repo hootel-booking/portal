@@ -10,6 +10,9 @@ $(document).ready(function () {
   $.ajax({
     url: `http://localhost:8080/rooms/id=${idRoom}`,
     method: "get",
+    headers: {
+      Authorization: "Bearer " + token,
+    },
   }).done(function (data) {
     const room = data?.data;
     const getTagIdRoom = document.getElementById("detailRoom");
@@ -17,7 +20,11 @@ $(document).ready(function () {
     document.getElementById("room-name").value = `${room.name}`;
 
     htmlDisplay = `
-          <img src="img/room/room-details.jpg" alt="">
+          <img src=${
+            room?.image
+              ? `http://localhost:8080/file/pathImage=rooms&fileName=${room?.image}`
+              : "img/room/room-details.jpg"
+          } alt="">
           <div class="rd-text">
               <div class="rd-title">
                   <h3>${room.name}</h3>
@@ -29,7 +36,7 @@ $(document).ready(function () {
                           <i class="icon_star"></i>
                           <i class="icon_star-half_alt"></i>
                       </div>
-                      <a href="#">Booking Now</a>
+                      <a href="./booking-now.html">Booking Now</a>
                       <a href="#" class="add-to-cart-btn">Add To Cart</a>
                   </div>
               </div>
@@ -65,33 +72,39 @@ $(document).ready(function () {
       headers: {
         Authorization: "Bearer " + token,
       },
-    }).done(function (data) {
-      if (data.data) {
-        const getElIdCartCount = document.getElementById("lblCartCount");
-        let contentCartCount = $("#lblCartCount").text();
-        if (contentCartCount === "") {
-          htmlDisplay = 1 + "";
-          getElIdCartCount.innerHTML = htmlDisplay;
-        } else {
-          htmlDisplay = Number(contentCartCount) + 1 + "";
-          getElIdCartCount.innerHTML = htmlDisplay;
-        }
+    })
+      .done(function (data) {
+        if (data.data) {
+          const getElIdCartCount = document.getElementById("lblCartCount");
+          let contentCartCount = $("#lblCartCount").text();
+          if (contentCartCount === "") {
+            htmlDisplay = 1 + "";
+            getElIdCartCount.innerHTML = htmlDisplay;
+          } else {
+            htmlDisplay = Number(contentCartCount) + 1 + "";
+            getElIdCartCount.innerHTML = htmlDisplay;
+          }
 
-        alert("Success");
-      } else {
-        alert("Error");
-      }
-    });
+          displayToast("Success", 1);
+        } else {
+          displayToast("Your cart already have this room", 2);
+        }
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        displayToast("Error: " + errorThrown, 3);
+      });
   });
 
   $(document).on("click", ".btn-check-availability", function (e) {
     // prevent reload page
     e.preventDefault();
 
-    const getElModal = document.getElementById("modalReservation");
-
     let dateCheckIn = $("#date-in").val();
     let dateCheckOut = $("#date-out").val();
+
+    if (!validateForm(dateCheckIn, dateCheckOut)) {
+      return;
+    }
 
     $.ajax({
       url: `http://localhost:8080/reservation/idRoom=${idRoom}`,
@@ -101,13 +114,20 @@ $(document).ready(function () {
         dateCheckIn: formatDate(dateCheckIn),
         dateCheckOut: formatDate(dateCheckOut),
       }),
-    }).done(function (data) {
-      if (data?.data) {
-        alert("This room is available");
-      } else {
-        alert("This room is not available");
-      }
-    });
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .done(function (data) {
+        if (data?.data) {
+          displayToast("This room is available", 1);
+        } else {
+          displayToast("This room is not available", 2);
+        }
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        displayToast("Error: " + errorThrown, 3);
+      });
   });
 
   function formatDate(date) {
@@ -117,4 +137,74 @@ $(document).ready(function () {
     const year = dateUTC.getFullYear();
     return getDate + "-" + month + "-" + year;
   }
+
+  function validateForm(checkIn, checkOut) {
+    if (!checkIn || !checkIn) {
+      displayToast("date checkin/ checkout is required", 2);
+      return false;
+    }
+
+    let currentDate = new Date().getTime();
+    let date1 = new Date(checkIn).getTime();
+    let date2 = new Date(checkOut).getTime();
+
+    if (date1 <= currentDate || date2 <= currentDate) {
+      displayToast("date checkin/ date checkout invalid", 2);
+      return false;
+    } else if (date1 >= date2) {
+      displayToast("date checkin/ date checkout invalid", 2);
+      return false;
+    }
+    return true;
+  }
+
+  function displayToast(content, status) {
+    let title = "Successful";
+    const idEl = document.getElementById("toastMessage");
+
+    switch (status) {
+      case 1:
+        // SUCCESS
+        idEl.classList.remove("alert-warning");
+        idEl.classList.remove("alert-danger");
+
+        idEl.classList.add("alert-success");
+        idEl.style.display = "block";
+        break;
+      case 2:
+        // WARNING
+        title = "Warning";
+        idEl.classList.remove("alert-danger");
+        idEl.classList.remove("alert-success");
+
+        idEl.classList.add("alert-warning");
+        idEl.style.display = "block";
+        break;
+      case 3:
+        // DANGER
+        title = "Error";
+        idEl.classList.remove("alert-success");
+        idEl.classList.remove("alert-warning");
+
+        idEl.classList.add("alert-danger");
+        idEl.style.display = "block";
+        break;
+    }
+
+    let htmlDisplay = `
+      <button
+        type="button"
+        class="close close-btn"
+      >
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <strong>${title}!</strong> ${content}
+    `;
+    idEl.innerHTML = htmlDisplay;
+  }
+
+  $(document).on("click", ".close-btn", function (e) {
+    const idEl = document.getElementById("toastMessage");
+    idEl.style.display = "none";
+  });
 });

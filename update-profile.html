@@ -68,13 +68,7 @@
           <li><a href="./rooms.html">Rooms</a></li>
           <li><a href="./about-us.html">About Us</a></li>
           <li>
-            <a href="./pages.html">Pages</a>
-            <ul class="dropdown">
-              <li><a href="./room-details.html">Room Details</a></li>
-              <li><a href="./blog-details.html">Blog Details</a></li>
-              <li><a href="#">Family Room</a></li>
-              <li><a href="#">Premium Room</a></li>
-            </ul>
+            <a href="./blog-detail.html">Blog</a>
           </li>
           <li><a href="./blog.html">News</a></li>
           <li><a href="./contact.html">Contact</a></li>
@@ -138,9 +132,9 @@
                     <li><a href="./rooms.html">Rooms</a></li>
                     <li><a href="./about-us.html">About Us</a></li>
                     <li>
-                      <a href="./pages.html">Pages</a>
+                      <a href="./blog.html">Blog</a>
                     </li>
-                    <li><a href="./blog.html">News</a></li>
+                    <li><a href="./blog-details.html">News</a></li>
                     <li><a href="./contact.html">Contact</a></li>
                     <li>
                       <a href="./your-reservation.html">Reservation</a>
@@ -178,6 +172,14 @@
     <!-- Breadcrumb Section Begin -->
     <div class="breadcrumb-section">
       <div class="container">
+        <!-- notify -->
+        <div
+          class="alert alert-warning alert-dismissible"
+          style="position: fixed; display: none; z-index: 1"
+          role="alert"
+          id="toastMessage"
+        ></div>
+
         <div class="row">
           <div class="col-lg-12">
             <div class="breadcrumb-text">
@@ -195,54 +197,65 @@
 
     <!-- Profile Section Begin -->
     <section class="profile-section spad">
-        <div class="container">
-            <div class="container-xxl flex-grow-1 container-p-y">
-                <h4 class="fw-bold py-3 mb-4"><span class="text-muted fw-light">Settings</h4>
-  
-                <div class="row">
-                  <div class="col-md-12">
-                    <div class="card mb-4" >
-                      <form id="formAccountSettings" enctype="multipart/form-data">
-                        <h5 class="card-header">Profile Details</h5>
-                        <div class="card-body">
-                            <div class="d-flex align-items-start align-items-sm-center gap-4">
-                                <img
-                                    src="/img/1.png"
-                                    alt="user-avatar"
-                                    class="d-block rounded"
-                                    height="100"
-                                    width="100"
-                                    id="uploadedAvatar"
-                                />
-                                <div class="button-wrapper">
-                                    <label for="upload" class="btn btn-primary me-2 mb-4" tabindex="0">
-                                    <span class="d-none d-sm-block">Upload new photo</span>
-                                    <i class="bx bx-upload d-block d-sm-none"></i>
-                                    <input
-                                        type="file"
-                                        id="upload"
-                                        class="account-file-input"
-                                        hidden
-                                        accept="image/png, image/jpeg"
-                                        name="file"
-                                    />
-                                    </label>
-                                    <button type="button" class="btn btn-outline-secondary account-image-reset mb-4">
-                                      <i class="bx bx-reset d-block d-sm-none"></i>
-                                      <span class="d-none d-sm-block">Reset</span>
-                                    </button>
-                                    <p class="text-muted mb-0">Allowed JPG, GIF or PNG. Max size of 800K</p>
-                                </div>
-                            </div>
-                        </div>
-                        <hr class="my-0" />
-                        <div class="card-body" id="formUser"></div>
-                      </form>
+      <div class="container">
+        <div class="container-xxl flex-grow-1 container-p-y">
+          <div class="row">
+            <div class="col-md-12">
+              <div class="card mb-4">
+                <form id="formAccountSettings" enctype="multipart/form-data">
+                  <h5 class="card-header">Profile Details</h5>
+                  <div class="card-body">
+                    <div
+                      class="d-flex align-items-start align-items-sm-center gap-4"
+                    >
+                      <img
+                        src="/img/1.png"
+                        alt="user-avatar"
+                        class="d-block rounded"
+                        height="100"
+                        width="100"
+                        id="uploadedAvatar"
+                      />
+                      <div class="button-wrapper">
+                        <label
+                          for="upload"
+                          class="btn btn-primary me-2 mb-4"
+                          tabindex="0"
+                        >
+                          <span class="d-none d-sm-block"
+                            >Upload new photo</span
+                          >
+                          <i class="bx bx-upload d-block d-sm-none"></i>
+                          <input
+                            type="file"
+                            id="upload"
+                            class="account-file-input"
+                            hidden
+                            accept="image/png, image/jpeg"
+                            name="file"
+                          />
+                        </label>
+                        <button
+                          type="button"
+                          class="btn btn-outline-secondary account-image-reset mb-4"
+                        >
+                          <i class="bx bx-reset d-block d-sm-none"></i>
+                          <span class="d-none d-sm-block">Reset</span>
+                        </button>
+                        <p class="text-muted mb-0">
+                          Allowed JPG, GIF or PNG. Max size of 800K
+                        </p>
+                      </div>
                     </div>
                   </div>
-                </div>
+                  <hr class="my-0" />
+                  <div class="card-body" id="formUser"></div>
+                </form>
+              </div>
             </div>
+          </div>
         </div>
+      </div>
     </section>
     <!-- Profile Section End -->
 
@@ -347,10 +360,9 @@
     <script src="js/owl.carousel.min.js"></script>
     <script src="js/main.js"></script>
 
+    <script src="js/guard.js"></script>
     <script src="js/pages-account-settings-account.js"></script>
-
     <script src="js/badge-cart.js"></script>
-
     <script src="js/update-profile.js"></script>
   </body>
 </html>

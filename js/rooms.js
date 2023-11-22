@@ -1,58 +1,72 @@
 $(document).ready(function () {
   const initPageNumber = 0;
-  renderListRoom(initPageNumber);
   const idElRow = document.getElementById("rowRoom");
+  const token = localStorage.getItem("TOKEN");
+  renderListRoom(initPageNumber);
 
   function renderListRoom(pageNumber) {
     $.ajax({
       url: `http://localhost:8080/rooms/page=${pageNumber}`,
       method: "get",
-    }).done(function (data) {
-      let rooms = [];
-      totalPage = data?.data?.totalPages;
-      rooms = data?.data?.content;
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    })
+      .done(function (data) {
+        let rooms = [];
+        totalPage = data?.data?.totalPages;
+        rooms = data?.data?.content;
 
-      rooms.forEach((room) => {
-        let htmlDisplay = "";
+        rooms.forEach((room) => {
+          let htmlDisplay = "";
 
-        // create div element
-        let div = document.createElement("div");
-        div.classList.add("col-lg-4", "col-md-6");
-        div.setAttribute("id", `idRoom-${room.id}`);
+          // create div element
+          let div = document.createElement("div");
+          div.classList.add("col-lg-4", "col-md-6");
+          div.setAttribute("id", `idRoom-${room.id}`);
 
-        idElRow.appendChild(div);
-        const idElRoom = document.getElementById(`idRoom-${room.id}`);
+          idElRow.appendChild(div);
+          const idElRoom = document.getElementById(`idRoom-${room.id}`);
 
-        htmlDisplay = `
-          <div class="room-item">
-            <img src="img/room/room-3.jpg" alt="" />
-            <div class="ri-text">
-              <h4>${room.name}</h4>
-              <h3>${room.price}$<span>/Pernight</span></h3>
-              <table>
-                <tbody>
-                  <tr>
-                    <td class="r-o">Size:</td>
-                    <td>${room.square} ft</td>
-                  </tr>
-                  <tr>
-                    <td class="r-o">Services:</td>
-                    <td>${room.nameType}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <a href="./room-details.html?id=${room.id}" class="primary-btn">More Details</a>
+          htmlDisplay = `
+            <div class="room-item">
+              <img id="uploadedImage" src=${
+                room?.image
+                  ? `http://localhost:8080/file/pathImage=rooms&fileName=${room?.image}`
+                  : "img/room/room-details.jpg"
+              } alt="${room.name}" />
+              <div class="ri-text">
+                <h4>${room.name}</h4>
+                <h3>${room.price}$<span>/Pernight</span></h3>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td class="r-o">Size:</td>
+                      <td>${room.square} ft</td>
+                    </tr>
+                    <tr>
+                      <td class="r-o">Services:</td>
+                      <td>${room.nameType}</td>
+                    </tr>
+                  </tbody>
+                </table>
+                <a href="./room-details.html?id=${
+                  room.id
+                }" class="primary-btn">More Details</a>
+              </div>
             </div>
-          </div>
-        `;
+          `;
 
-        idElRoom.innerHTML = htmlDisplay;
+          idElRoom.innerHTML = htmlDisplay;
+        });
+
+        if (rooms.length > 0) {
+          displayPagination(totalPage, pageNumber);
+        }
+      })
+      .fail(function (jqXHR, textStatus, errorThrown) {
+        displayToast("Error: " + errorThrown, 3);
       });
-
-      if (rooms.length > 0) {
-        displayPagination(totalPage, pageNumber);
-      }
-    });
   }
 
   function displayPagination(totalPage, currentPage) {
