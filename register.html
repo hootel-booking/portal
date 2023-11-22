@@ -53,10 +53,19 @@
               <p class="mb-4">
                 Please sign-in to your account and start the adventure
               </p>
+              <!-- notify -->
+              <div
+                class="alert alert-warning alert-dismissible"
+                style="position: fixed; display: none; z-index: 1"
+                role="alert"
+                id="toastMessage"
+              ></div>
 
               <form id="formAuthentication" class="mb-3">
                 <div class="mb-3">
-                  <label for="username" class="form-label">Username</label>
+                  <label for="username" class="form-label"
+                    >Username<label style="color: red">*</label></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -67,7 +76,9 @@
                   />
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+                  <label for="email" class="form-label"
+                    >Email<label style="color: red">*</label></label
+                  >
                   <input
                     type="text"
                     class="form-control"
@@ -87,7 +98,9 @@
                   />
                 </div>
                 <div class="mb-3 form-password-toggle">
-                  <label class="form-label" for="password">Password</label>
+                  <label class="form-label" for="password"
+                    >Password<label style="color: red">*</label></label
+                  >
                   <div class="input-group input-group-merge">
                     <input
                       type="password"
@@ -104,7 +117,7 @@
                 </div>
                 <div class="mb-3 form-password-toggle">
                   <label class="form-label" for="repeat_password"
-                    >Repeat Password</label
+                    >Repeat Password<label style="color: red">*</label></label
                   >
                   <div class="input-group input-group-merge">
                     <input

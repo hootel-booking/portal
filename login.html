@@ -39,6 +39,14 @@
         <div class="authentication-inner">
           <!-- Register -->
           <div class="card">
+            <!-- notify -->
+            <div
+              class="alert alert-warning alert-dismissible"
+              style="position: fixed; display: none"
+              role="alert"
+              id="toastMessage"
+            ></div>
+
             <div class="card-body">
               <!-- Logo -->
               <div class="app-brand justify-content-center">
@@ -53,7 +61,6 @@
               <p class="mb-4">
                 Please sign-in to your account and start the adventure
               </p>
-
               <form id="formAuthentication" class="mb-3">
                 <div class="mb-3">
                   <label for="email" class="form-label">Email</label>
@@ -64,6 +71,7 @@
                     name="email"
                     placeholder="Enter your email"
                     autofocus
+                    pattern="[A-Za-z]{3}"
                   />
                 </div>
                 <div class="mb-3 form-password-toggle">
